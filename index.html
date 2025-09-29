@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>River King — open Telegram bot</title>
-  <meta name="description" content="Official River King landing. Click the button to open the Telegram bot." />
+  <title>River King — Launch in Telegram</title>
+  <meta name="description" content="Official River King launch page. Opens the Telegram bot @river_king_bot." />
   <link rel="canonical" href="https://anry88.github.io/RiverKingWelcomePage/" />
 
-  <!-- Open Graph -->
+  <!-- Social -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="River King — open Telegram bot">
-  <meta property="og:description" content="Open the River King bot in one click.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/anry88/RiverKingWelcomePage/main/og-cover.png">
-  <meta property="og:url" content="https://anry88.github.io/RiverKingWelcomePage/" />
+  <meta property="og:title" content="River King — Launch in Telegram">
+  <meta property="og:description" content="Official launch page. Opens the Telegram bot @river_king_bot.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/anry88/RiverKingWelcomePage/main/rk-logo.png">
+  <meta property="og:url" content="https://anry88.github.io/RiverKingWelcomePage/">
 
-  <!-- Google Ads tag (gtag.js) -->
+  <!-- Google Ads tag (global). Keep or remove as you wish -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17124852771"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -30,35 +30,35 @@
     .wrap { min-height:100%; display:grid; place-items:center; padding:24px; }
     .card {
       width:min(720px,96%); background:rgba(15,27,49,.92);
-      border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:28px 24px;
+      border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:28px 24px 24px;
       box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
-      position:relative;
+      position:relative; text-align:center;
     }
-    h1 { margin:0 0 8px; font-size:clamp(24px,3.5vw,38px); letter-spacing:.2px; }
-    p { margin:0 0 20px; color:var(--sub); font-size:clamp(14px,2.2vw,18px); line-height:1.55; }
+    .brand {
+      display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:16px;
+    }
+    .brand img {
+      width:96px; height:96px; object-fit:contain; border-radius:16px; background:rgba(255,255,255,.04);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.15);
+    }
+    h1 { margin:0; font-size:clamp(22px,3.4vw,34px); letter-spacing:.2px; }
+    p  { margin:8px 0 20px; color:var(--sub); font-size:clamp(14px,2.2vw,18px); }
+    .bot { font-weight:700; color:#cfe3ff; }
     .cta {
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      width:100%; max-width:420px; padding:16px 20px; border-radius:14px;
-      background:#2e74ff; color:white; text-decoration:none; font-weight:700; font-size:18px;
+      width:100%; max-width:440px; padding:16px 20px; border-radius:14px;
+      background:#2e74ff; color:white; text-decoration:none; font-weight:800; font-size:18px;
       border:1px solid rgba(255,255,255,.15); box-shadow:0 6px 16px rgba(46,116,255,.35);
-      transition:transform .06s ease, box-shadow .2s ease, opacity .2s ease;
+      transition:transform .06s ease, box-shadow .2s ease;
     }
     .cta:hover { transform:translateY(-1px); box-shadow:0 10px 22px rgba(46,116,255,.42); }
-    .cta:active { transform:translateY(0); }
+    .cta svg { width:20px; height:20px; }
     .meta { margin-top:14px; font-size:13px; color:#93a7d0; opacity:.9 }
-    .logo {
-      width:56px; height:56px; border-radius:14px; display:grid; place-items:center;
-      background:radial-gradient(60% 60% at 60% 30%, #4aa3ff 0%, #2e74ff 50%, #2246b8 100%);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.25), 0 6px 20px rgba(0,0,0,.35);
-      margin-right:14px; flex:0 0 auto;
-    }
-    .row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-    .small { font-size:12px; opacity:.8 }
-    .kbd { padding:2px 6px; border:1px solid rgba(255,255,255,.2); border-radius:6px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .kbd  { padding:2px 6px; border:1px solid rgba(255,255,255,.2); border-radius:6px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 
     /* Lang switcher */
     .lang {
-      position:absolute; top:16px; right:16px; display:flex; gap:8px;
+      position:absolute; top:14px; right:14px; display:flex; gap:8px;
       background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
       padding:6px; border-radius:12px; backdrop-filter: blur(4px);
     }
@@ -67,20 +67,17 @@
       color:var(--txt); background:transparent; font-weight:700; font-size:12px;
     }
     .lang button.active { background:#2e74ff; }
+    .trust { margin-top:18px; font-size:12px; color:#8ea3c8; opacity:.95 }
   </style>
 
+  <!-- Save lang from URL/hash ASAP (GH Pages may normalize slashes) -->
   <script>
-    /* Persist lang from URL/hash as early as possible (GH Pages may add a trailing slash) */
-    (function persistLangFromUrlEarly() {
+    (function () {
       try {
-        var search = new URLSearchParams(location.search);
-        var hash = location.hash.replace(/^#/, '');
-        var hparams = new URLSearchParams(hash.includes('=') ? hash : ('lang=' + hash));
-        var qLang = (search.get('lang') || '').toLowerCase();
-        var hLang = (hparams.get('lang') || '').toLowerCase();
-        var picked = (qLang === 'ru' || qLang === 'en') ? qLang
-                   : (hLang === 'ru' || hLang === 'en') ? hLang : '';
-        if (picked) localStorage.setItem('rk_lang', picked);
+        var q = new URLSearchParams(location.search);
+        var h = new URLSearchParams(location.hash.replace(/^#/, '').includes('=') ? location.hash.slice(1) : ('lang=' + location.hash.slice(1)));
+        var lang = (q.get('lang')||'').toLowerCase() || (h.get('lang')||'').toLowerCase();
+        if (lang === 'ru' || lang === 'en') localStorage.setItem('rk_lang', lang);
       } catch(_) {}
     })();
   </script>
@@ -93,23 +90,28 @@
         <button id="btn-ru" type="button">RU</button>
       </div>
 
-      <div class="row">
-        <div class="logo" aria-hidden="true">🎣</div>
-        <div>
-          <h1 id="t-heading">River King — open the Telegram bot</h1>
-          <div id="t-sub" class="small">Official launch button.</div>
-        </div>
+      <div class="brand">
+        <img src="./rk-logo.png" alt="River King logo" />
+        <h1 id="t-heading">River King — Launch in Telegram</h1>
       </div>
 
-      <p id="t-paragraph">Press the button below — Telegram will open.</p>
+      <p id="t-paragraph">
+        Official launch page. Opens the Telegram bot <span class="bot">@river_king_bot</span>.
+      </p>
 
       <a id="cta" class="cta" href="https://t.me/river_king_bot?start=start" rel="noopener">
-        Open the bot in Telegram
+        <!-- Telegram paper-plane icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 2.3c.3-.1.6 0 .8.3.2.3.2.6 0 .9l-4.5 17.1c-.1.4-.6.6-1 .4-.1 0-.2-.1-.3-.2l-6.1-4.9-3 2.9c-.2.2-.6.2-.8-.1-.1-.1-.2-.3-.2-.4l.6-5.1L20.8 3.4 8 12.7l-4.8-2c-.4-.2-.5-.6-.4-1 .1-.2.2-.3.4-.4L21.9 2.3z"/></svg>
+        <span id="t-button">Open in Telegram</span>
       </a>
 
       <div class="meta">
-        <span id="t-manual">If auto-open didn’t work, open the link manually:</span>
-        <span class="kbd" id="t-link">https://t.me/river_king_bot?start=start</span>
+        <span id="t-manual">If Telegram doesn’t open, use this link:</span>
+        <span class="kbd">https://t.me/river_king_bot?start=start</span>
+      </div>
+
+      <div class="trust" id="t-trust">
+        Hosted on GitHub Pages (anry88.github.io). We never ask for passwords or phone numbers here.
       </div>
     </section>
   </main>
@@ -117,56 +119,32 @@
   <script>
     'use strict';
 
-    /* ---------- i18n ---------- */
+    // Minimal i18n
     const I18N = {
       en: {
-        langAttr: 'en',
-        title: 'River King — open Telegram bot',
-        heading: 'River King — open the Telegram bot',
-        sub: 'Official launch button.',
-        paragraph: 'Press the button below — Telegram will open.',
-        button: 'Open the bot in Telegram',
-        manual: 'If auto-open didn’t work, open the link manually:'
+        title: 'River King — Launch in Telegram',
+        heading: 'River King — Launch in Telegram',
+        paragraph: 'Official launch page. Opens the Telegram bot @river_king_bot.',
+        button: 'Open in Telegram',
+        manual: 'If Telegram doesn’t open, use this link:',
+        trust: 'Hosted on GitHub Pages (anry88.github.io). We never ask for passwords or phone numbers here.'
       },
       ru: {
-        langAttr: 'ru',
-        title: 'River King — открыть Telegram-бота',
-        heading: 'River King — открыть Telegram-бота',
-        sub: 'Официальная кнопка запуска.',
-        paragraph: 'Нажмите кнопку ниже — Telegram откроется.',
-        button: 'Открыть бота в Telegram',
-        manual: 'Если автоматический переход не сработал, откройте ссылку вручную:'
+        title: 'River King — открыть в Telegram',
+        heading: 'River King — открыть в Telegram',
+        paragraph: 'Официальная страница запуска. Откроет бота @river_king_bot.',
+        button: 'Открыть в Telegram',
+        manual: 'Если Telegram не открылся, воспользуйтесь ссылкой:',
+        trust: 'Сайт на GitHub Pages (anry88.github.io). Мы не просим пароли или номер телефона на этой странице.'
       }
     };
+
     const $ = id => document.getElementById(id);
 
-    function baseUrlWithSlash() {
-      const u = new URL(location.href);
-      if (!u.pathname.endsWith('/')) u.pathname += '/';
-      u.search = '';
-      return u;
-    }
-
-    function setLang(lang) {
-      const t = I18N[lang] || I18N.en;
-      document.documentElement.lang = t.langAttr;
-      document.title = t.title;
-      $('t-heading').textContent = t.heading;
-      $('t-sub').textContent = t.sub;
-      $('t-paragraph').textContent = t.paragraph;
-      $('cta').textContent = t.button;
-      $('t-manual').textContent = t.manual;
-      $('btn-en').classList.toggle('active', lang === 'en');
-      $('btn-ru').classList.toggle('active', lang === 'ru');
-      try { localStorage.setItem('rk_lang', lang); } catch(_) {}
-    }
-
     function detectLang() {
-      // 1) ?lang=
       const q = new URLSearchParams(location.search);
       const qLang = (q.get('lang') || '').toLowerCase();
 
-      // 2) #lang=ru or #ru
       const rawHash = location.hash.replace(/^#/, '');
       const hp = new URLSearchParams(rawHash.includes('=') ? rawHash : ('lang=' + rawHash));
       const hLang = (hp.get('lang') || '').toLowerCase();
@@ -174,22 +152,39 @@
       if (qLang === 'ru' || qLang === 'en') return qLang;
       if (hLang === 'ru' || hLang === 'en') return hLang;
 
-      // 3) localStorage
       try {
         const stored = (localStorage.getItem('rk_lang') || '').toLowerCase();
         if (stored === 'ru' || stored === 'en') return stored;
       } catch(_) {}
 
-      // 4) browser
       const langs = (navigator.languages || []).map(x => String(x).toLowerCase());
       const primary = String(navigator.language || '').toLowerCase();
       const all = [...langs, primary];
       if (all.some(l => l.startsWith('ru'))) return 'ru';
-
-      // 5) default
       return 'en';
     }
 
+    function setLang(lang) {
+      const t = I18N[lang] || I18N.en;
+      document.documentElement.lang = lang;
+      document.title = t.title;
+      $('t-heading').textContent = t.heading;
+      $('t-paragraph').textContent = t.paragraph;
+      $('t-button').textContent = t.button;
+      $('t-manual').textContent = t.manual;
+      $('t-trust').textContent = t.trust;
+
+      $('btn-en').classList.toggle('active', lang === 'en');
+      $('btn-ru').classList.toggle('active', lang === 'ru');
+      try { localStorage.setItem('rk_lang', lang); } catch(_) {}
+    }
+
+    function baseUrlWithSlash() {
+      const u = new URL(location.href);
+      if (!u.pathname.endsWith('/')) u.pathname += '/';
+      u.search = '';
+      return u;
+    }
     function writeCleanUrl(lang) {
       const u = baseUrlWithSlash();
       u.searchParams.set('lang', lang);
@@ -197,17 +192,15 @@
       history.replaceState(null, '', u);
     }
 
-    /* ---------- init ---------- */
+    // Init
     document.addEventListener('DOMContentLoaded', () => {
       const lang = detectLang();
       setLang(lang);
       writeCleanUrl(lang);
 
-      // Lang switcher
       $('btn-en').addEventListener('click', () => { setLang('en'); writeCleanUrl('en'); });
       $('btn-ru').addEventListener('click', () => { setLang('ru'); writeCleanUrl('ru'); });
 
-      // React to manual hash changes (#ru or #lang=ru)
       window.addEventListener('hashchange', () => {
         const h = location.hash.replace(/^#/, '');
         const hp = new URLSearchParams(h.includes('=') ? h : ('lang=' + h));
@@ -215,28 +208,19 @@
         if (hl === 'ru' || hl === 'en') { setLang(hl); writeCleanUrl(hl); }
       });
 
-      // ---------- Google Ads Conversion on CTA click ----------
+      // Google Ads Conversion on CTA click (replace LABEL!)
       const link = $('cta');
-      if (link) {
-        link.addEventListener('click', (e) => {
-          // Если gtag не загрузился (adblock и т.п.) — идём сразу
-          if (typeof window.gtag !== 'function') return;
-
-          e.preventDefault();
-          let navigated = false;
-          const go = () => { if (!navigated) { navigated = true; location.href = link.href; } };
-          // Резервный таймер — на случай, если callback не вернётся
-          setTimeout(go, 800);
-
-          // IMPORTANT: replace REPLACE_WITH_LABEL with your Conversion label
-          gtag('event', 'conversion', {
-            send_to: 'AW-17124852771/4SMPCJOZnaQbEKOI4uU_',
-            // value: 1.0,           // (опционально) зафиксировать ценность
-            // currency: 'USD',      // (опционально) валюта ценности
-            event_callback: go
-          });
+      link.addEventListener('click', (e) => {
+        if (typeof window.gtag !== 'function') return; // no tag — go immediately
+        e.preventDefault();
+        let done = false;
+        const go = () => { if (!done) { done = true; location.href = link.href; } };
+        setTimeout(go, 800);
+        gtag('event', 'conversion', {
+          send_to: 'AW-17124852771/4SMPCJOZnaQbEKOI4uU_ ', // <-- put your Conversion label here
+          event_callback: go
         });
-      }
+      });
     });
   </script>
 </body>
