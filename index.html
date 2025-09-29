@@ -11,19 +11,17 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="River King — open Telegram bot">
   <meta property="og:description" content="Open the River King bot in one click.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/<user>/<repo>/main/og-cover.png">
+  <meta property="og:image" content="https://raw.githubusercontent.com/anry88/RiverKingWelcomePage/main/og-cover.png">
   <meta property="og:url" content="https://anry88.github.io/RiverKingWelcomePage/" />
 
- <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17124852771"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'AW-17124852771');
-</script>
-
+  <!-- Google Ads tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17124852771"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'AW-17124852771');
+  </script>
 
   <style>
     :root { --bg1:#0b1221; --bg2:#12243d; --card:#0f1b31; --txt:#e7eefc; --sub:#a9b8d9; }
@@ -72,7 +70,7 @@
   </style>
 
   <script>
-    // --- Early parse to survive GH trailing slash normalizations ---
+    /* Persist lang from URL/hash as early as possible (GH Pages may add a trailing slash) */
     (function persistLangFromUrlEarly() {
       try {
         var search = new URLSearchParams(location.search);
@@ -118,6 +116,8 @@
 
   <script>
     'use strict';
+
+    /* ---------- i18n ---------- */
     const I18N = {
       en: {
         langAttr: 'en',
@@ -141,10 +141,9 @@
     const $ = id => document.getElementById(id);
 
     function baseUrlWithSlash() {
-      // гарантируем конечный слеш, чтобы GitHub Pages не редиректил и не терял query/hash
       const u = new URL(location.href);
       if (!u.pathname.endsWith('/')) u.pathname += '/';
-      u.search = ''; // очищаем query перед расстановкой
+      u.search = '';
       return u;
     }
 
@@ -163,11 +162,11 @@
     }
 
     function detectLang() {
-      // 1) URL ?lang=
+      // 1) ?lang=
       const q = new URLSearchParams(location.search);
       const qLang = (q.get('lang') || '').toLowerCase();
 
-      // 2) hash #lang=ru или просто #ru
+      // 2) #lang=ru or #ru
       const rawHash = location.hash.replace(/^#/, '');
       const hp = new URLSearchParams(rawHash.includes('=') ? rawHash : ('lang=' + rawHash));
       const hLang = (hp.get('lang') || '').toLowerCase();
@@ -181,49 +180,63 @@
         if (stored === 'ru' || stored === 'en') return stored;
       } catch(_) {}
 
-      // 4) браузер
+      // 4) browser
       const langs = (navigator.languages || []).map(x => String(x).toLowerCase());
       const primary = String(navigator.language || '').toLowerCase();
       const all = [...langs, primary];
       if (all.some(l => l.startsWith('ru'))) return 'ru';
 
-      // 5) дефолт
+      // 5) default
       return 'en';
     }
 
     function writeCleanUrl(lang) {
-      // Пишем и query, и hash, чтобы любой редирект их сохранил
       const u = baseUrlWithSlash();
       u.searchParams.set('lang', lang);
       u.hash = 'lang=' + lang;
       history.replaceState(null, '', u);
     }
 
-    // init
+    /* ---------- init ---------- */
     document.addEventListener('DOMContentLoaded', () => {
       const lang = detectLang();
       setLang(lang);
-      writeCleanUrl(lang); // зафиксируем корректный URL вида /repo/?lang=xx#lang=xx
+      writeCleanUrl(lang);
 
-      $('btn-en').addEventListener('click', () => {
-        setLang('en');
-        writeCleanUrl('en');
-      });
-      $('btn-ru').addEventListener('click', () => {
-        setLang('ru');
-        writeCleanUrl('ru');
-      });
+      // Lang switcher
+      $('btn-en').addEventListener('click', () => { setLang('en'); writeCleanUrl('en'); });
+      $('btn-ru').addEventListener('click', () => { setLang('ru'); writeCleanUrl('ru'); });
 
-      // Реагируем на изменения хэша (если вручную поменяли #ru/#lang=ru)
+      // React to manual hash changes (#ru or #lang=ru)
       window.addEventListener('hashchange', () => {
         const h = location.hash.replace(/^#/, '');
         const hp = new URLSearchParams(h.includes('=') ? h : ('lang=' + h));
         const hl = (hp.get('lang') || '').toLowerCase();
-        if (hl === 'ru' || hl === 'en') {
-          setLang(hl);
-          writeCleanUrl(hl);
-        }
+        if (hl === 'ru' || hl === 'en') { setLang(hl); writeCleanUrl(hl); }
       });
+
+      // ---------- Google Ads Conversion on CTA click ----------
+      const link = $('cta');
+      if (link) {
+        link.addEventListener('click', (e) => {
+          // Если gtag не загрузился (adblock и т.п.) — идём сразу
+          if (typeof window.gtag !== 'function') return;
+
+          e.preventDefault();
+          let navigated = false;
+          const go = () => { if (!navigated) { navigated = true; location.href = link.href; } };
+          // Резервный таймер — на случай, если callback не вернётся
+          setTimeout(go, 800);
+
+          // IMPORTANT: replace REPLACE_WITH_LABEL with your Conversion label
+          gtag('event', 'conversion', {
+            send_to: 'AW-17124852771/REPLACE_WITH_LABEL',
+            // value: 1.0,           // (опционально) зафиксировать ценность
+            // currency: 'USD',      // (опционально) валюта ценности
+            event_callback: go
+          });
+        });
+      }
     });
   </script>
 </body>
