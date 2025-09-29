@@ -12,9 +12,9 @@
   <meta property="og:title" content="River King — open Telegram bot">
   <meta property="og:description" content="Open the River King bot in one click.">
   <meta property="og:image" content="https://raw.githubusercontent.com/<user>/<repo>/main/og-cover.png">
-  <meta property="og:url" content="https://anry88.github.io/RiverKingWelcomePage/">
+  <meta property="og:url" content="https://anry88.github.io/RiverKingWelcomePage/" />
 
-  <!-- GA4 (optional). Safe: no errors if blocked/absent. Replace G-XXXXXXXXXX or remove both scripts. -->
+  <!-- GA4 (optional) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -68,6 +68,22 @@
     }
     .lang button.active { background:#2e74ff; }
   </style>
+
+  <script>
+    // --- Early parse to survive GH trailing slash normalizations ---
+    (function persistLangFromUrlEarly() {
+      try {
+        var search = new URLSearchParams(location.search);
+        var hash = location.hash.replace(/^#/, '');
+        var hparams = new URLSearchParams(hash.includes('=') ? hash : ('lang=' + hash));
+        var qLang = (search.get('lang') || '').toLowerCase();
+        var hLang = (hparams.get('lang') || '').toLowerCase();
+        var picked = (qLang === 'ru' || qLang === 'en') ? qLang
+                   : (hLang === 'ru' || hLang === 'en') ? hLang : '';
+        if (picked) localStorage.setItem('rk_lang', picked);
+      } catch(_) {}
+    })();
+  </script>
 </head>
 <body>
   <main class="wrap">
@@ -100,8 +116,6 @@
 
   <script>
     'use strict';
-
-    // Texts
     const I18N = {
       en: {
         langAttr: 'en',
@@ -122,9 +136,15 @@
         manual: 'Если автоматический переход не сработал, откройте ссылку вручную:'
       }
     };
+    const $ = id => document.getElementById(id);
 
-    // Utils
-    const $ = (id) => document.getElementById(id);
+    function baseUrlWithSlash() {
+      // гарантируем конечный слеш, чтобы GitHub Pages не редиректил и не терял query/hash
+      const u = new URL(location.href);
+      if (!u.pathname.endsWith('/')) u.pathname += '/';
+      u.search = ''; // очищаем query перед расстановкой
+      return u;
+    }
 
     function setLang(lang) {
       const t = I18N[lang] || I18N.en;
@@ -135,66 +155,72 @@
       $('t-paragraph').textContent = t.paragraph;
       $('cta').textContent = t.button;
       $('t-manual').textContent = t.manual;
-
-      // Switcher active state
       $('btn-en').classList.toggle('active', lang === 'en');
       $('btn-ru').classList.toggle('active', lang === 'ru');
-
       try { localStorage.setItem('rk_lang', lang); } catch(_) {}
     }
 
     function detectLang() {
+      // 1) URL ?lang=
       const q = new URLSearchParams(location.search);
-      const forced = (q.get('lang') || '').toLowerCase();
-      if (forced === 'ru' || forced === 'en') return forced;
+      const qLang = (q.get('lang') || '').toLowerCase();
 
+      // 2) hash #lang=ru или просто #ru
+      const rawHash = location.hash.replace(/^#/, '');
+      const hp = new URLSearchParams(rawHash.includes('=') ? rawHash : ('lang=' + rawHash));
+      const hLang = (hp.get('lang') || '').toLowerCase();
+
+      if (qLang === 'ru' || qLang === 'en') return qLang;
+      if (hLang === 'ru' || hLang === 'en') return hLang;
+
+      // 3) localStorage
       try {
         const stored = (localStorage.getItem('rk_lang') || '').toLowerCase();
         if (stored === 'ru' || stored === 'en') return stored;
       } catch(_) {}
 
-      const list = []
-        .concat(navigator.languages || [])
-        .concat(navigator.language || [])
-        .map(s => String(s || '').toLowerCase());
+      // 4) браузер
+      const langs = (navigator.languages || []).map(x => String(x).toLowerCase());
+      const primary = String(navigator.language || '').toLowerCase();
+      const all = [...langs, primary];
+      if (all.some(l => l.startsWith('ru'))) return 'ru';
 
-      if (list.some(l => l.startsWith('ru'))) return 'ru';
+      // 5) дефолт
       return 'en';
     }
 
-    // Init after DOM is ready
+    function writeCleanUrl(lang) {
+      // Пишем и query, и hash, чтобы любой редирект их сохранил
+      const u = baseUrlWithSlash();
+      u.searchParams.set('lang', lang);
+      u.hash = 'lang=' + lang;
+      history.replaceState(null, '', u);
+    }
+
+    // init
     document.addEventListener('DOMContentLoaded', () => {
-      setLang(detectLang());
+      const lang = detectLang();
+      setLang(lang);
+      writeCleanUrl(lang); // зафиксируем корректный URL вида /repo/?lang=xx#lang=xx
 
       $('btn-en').addEventListener('click', () => {
-        const url = new URL(location.href);
-        url.searchParams.set('lang','en');
-        history.replaceState(null,'',url);
         setLang('en');
+        writeCleanUrl('en');
       });
-
       $('btn-ru').addEventListener('click', () => {
-        const url = new URL(location.href);
-        url.searchParams.set('lang','ru');
-        history.replaceState(null,'',url);
         setLang('ru');
+        writeCleanUrl('ru');
       });
 
-      // Optional: GA4 event (silent)
-      const link = $('cta');
-      link.addEventListener('click', (e) => {
-        if (typeof window.gtag !== 'function') return; // no GA -> just follow
-        e.preventDefault();
-        let navigated = false;
-        const go = () => { if (!navigated) { navigated = true; location.href = link.href; } };
-        setTimeout(go, 800);
-        const p = new URLSearchParams(location.search);
-        const params = {};
-        ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','gbraid','wbraid','gad_source','lang'].forEach(k=>{
-          if (p.get(k)) params[k]=p.get(k);
-        });
-        params.resolved_lang = document.documentElement.lang || 'en';
-        try { gtag('event', 'tg_bot_click', { ...params, event_callback: go }); } catch(_) { go(); }
+      // Реагируем на изменения хэша (если вручную поменяли #ru/#lang=ru)
+      window.addEventListener('hashchange', () => {
+        const h = location.hash.replace(/^#/, '');
+        const hp = new URLSearchParams(h.includes('=') ? h : ('lang=' + h));
+        const hl = (hp.get('lang') || '').toLowerCase();
+        if (hl === 'ru' || hl === 'en') {
+          setLang(hl);
+          writeCleanUrl(hl);
+        }
       });
     });
   </script>
