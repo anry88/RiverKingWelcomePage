@@ -14,7 +14,7 @@
   <meta property="og:image" content="https://raw.githubusercontent.com/<user>/<repo>/main/og-cover.png">
   <meta property="og:url" content="https://<your-github-pages-domain>/">
 
-  <!-- GA4 (замени G-XXXXXXXXXX; можно оставить — страница работает и без него) -->
+  <!-- GA4 (optional; replace G-XXXXXXXXXX or remove) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -32,6 +32,7 @@
       width:min(720px,96%); background:color-mix(in srgb, var(--card) 92%, transparent);
       border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:28px 24px;
       box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+      position:relative;
     }
     h1 { margin:0 0 8px; font-size:clamp(24px,3.5vw,38px); letter-spacing:.2px; }
     p { margin:0 0 20px; color:var(--sub); font-size:clamp(14px,2.2vw,18px); line-height:1.55; }
@@ -53,13 +54,29 @@
     }
     .row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
     .small { font-size:12px; opacity:.8 }
-    .foot { margin-top:18px; font-size:12px; color:#8ea3c8; }
     .kbd { padding:2px 6px; border:1px solid rgba(255,255,255,.2); border-radius:6px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    /* Lang switcher */
+    .lang {
+      position:absolute; top:16px; right:16px; display:flex; gap:8px;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+      padding:6px; border-radius:12px; backdrop-filter: blur(4px);
+    }
+    .lang button {
+      cursor:pointer; border:0; padding:6px 10px; border-radius:8px;
+      color:var(--txt); background:transparent; font-weight:700; font-size:12px;
+    }
+    .lang button.active { background:#2e74ff; }
   </style>
 </head>
 <body>
   <main class="wrap">
     <section class="card">
+      <div class="lang" aria-label="Language">
+        <button id="btn-en" type="button">EN</button>
+        <button id="btn-ru" type="button">RU</button>
+      </div>
+
       <div class="row">
         <div class="logo" aria-hidden="true">🎣</div>
         <div>
@@ -68,29 +85,21 @@
         </div>
       </div>
 
-      <p id="t-paragraph">
-        Press the button below — Telegram will open.
-      </p>
+      <p id="t-paragraph">Press the button below — Telegram will open.</p>
 
-      <a id="cta"
-         class="cta"
-         href="https://t.me/river_king_bot?start=start"
-         rel="noopener"
-      >Open the bot in Telegram</a>
+      <a id="cta" class="cta" href="https://t.me/river_king_bot?start=start" rel="noopener">
+        Open the bot in Telegram
+      </a>
 
       <div class="meta">
         <span id="t-manual">If auto-open didn’t work, open the link manually:</span>
         <span class="kbd" id="t-link">https://t.me/river_king_bot?start=start</span>
       </div>
-
-      <div id="t-foot" class="foot">
-        <!-- оставил пустым — без упоминаний о трекинге -->
-      </div>
     </section>
   </main>
 
   <script>
-    // --- i18n dictionary (без упоминаний о трекинге) ---
+    // Texts
     const I18N = {
       en: {
         langAttr: 'en',
@@ -99,8 +108,7 @@
         sub: 'Official launch button.',
         paragraph: 'Press the button below — Telegram will open.',
         button: 'Open the bot in Telegram',
-        manual: 'If auto-open didn’t work, open the link manually:',
-        foot: ''
+        manual: 'If auto-open didn’t work, open the link manually:'
       },
       ru: {
         langAttr: 'ru',
