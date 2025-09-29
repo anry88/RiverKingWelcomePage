@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>River King — open Telegram bot</title>
+  <meta name="description" content="Official River King landing. Click the button to open the Telegram bot." />
+  <link rel="canonical" href="https://<your-github-pages-domain>/" />
+
+  <!-- Open Graph (EN as default; fine for both) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="River King — open Telegram bot">
+  <meta property="og:description" content="Open the River King bot in one click.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/<user>/<repo>/main/og-cover.png">
+  <meta property="og:url" content="https://<your-github-pages-domain>/">
+
+  <!-- ===== GA4 (replace G-XXXXXXXXXX) ===== -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', { transport_type: 'beacon' });
+  </script>
+
+  <style>
+    :root { --bg1:#0b1221; --bg2:#12243d; --card:#0f1b31; --txt:#e7eefc; --sub:#a9b8d9; }
+    * { box-sizing:border-box; }
+    html,body { height:100%; margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu; color:var(--txt); background:linear-gradient(180deg,var(--bg1),var(--bg2)); }
+    .wrap { min-height:100%; display:grid; place-items:center; padding:24px; }
+    .card {
+      width:min(720px,96%); background:color-mix(in srgb, var(--card) 92%, transparent);
+      border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:28px 24px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    h1 { margin:0 0 8px; font-size:clamp(24px,3.5vw,38px); letter-spacing:.2px; }
+    p { margin:0 0 20px; color:var(--sub); font-size:clamp(14px,2.2vw,18px); line-height:1.55; }
+    .cta {
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      width:100%; max-width:420px; padding:16px 20px; border-radius:14px;
+      background:#2e74ff; color:white; text-decoration:none; font-weight:700; font-size:18px;
+      border:1px solid rgba(255,255,255,.15); box-shadow:0 6px 16px rgba(46,116,255,.35);
+      transition:transform .06s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+    .cta:hover { transform:translateY(-1px); box-shadow:0 10px 22px rgba(46,116,255,.42); }
+    .cta:active { transform:translateY(0); }
+    .meta { margin-top:14px; font-size:13px; color:#93a7d0; opacity:.9 }
+    .logo {
+      width:56px; height:56px; border-radius:14px; display:grid; place-items:center;
+      background:radial-gradient(60% 60% at 60% 30%, #4aa3ff 0%, #2e74ff 50%, #2246b8 100%);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.25), 0 6px 20px rgba(0,0,0,.35);
+      margin-right:14px; flex:0 0 auto;
+    }
+    .row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+    .small { font-size:12px; opacity:.8 }
+    .foot { margin-top:18px; font-size:12px; color:#8ea3c8; }
+    .kbd { padding:2px 6px; border:1px solid rgba(255,255,255,.2); border-radius:6px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="row">
+        <div class="logo" aria-hidden="true">🎣</div>
+        <div>
+          <h1 id="t-heading">River King — open the Telegram bot</h1>
+          <div id="t-sub" class="small">Official launch button. Click is tracked in GA4.</div>
+        </div>
+      </div>
+
+      <p id="t-paragraph">
+        Press the button below — Telegram will open. The click event is sent to Google Analytics 4 (you can mark it as a conversion).
+      </p>
+
+      <a id="cta"
+         class="cta"
+         href="https://t.me/river_king_bot?start=start"
+         rel="noopener"
+      >Open the bot in Telegram</a>
+
+      <div class="meta">
+        <span id="t-manual">If auto-open didn’t work, open the link manually:</span>
+        <span class="kbd" id="t-link">https://t.me/river_king_bot?start=start</span>
+      </div>
+
+      <div id="t-foot" class=
