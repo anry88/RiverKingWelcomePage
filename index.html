@@ -7,14 +7,14 @@
   <meta name="description" content="Official River King landing. Click the button to open the Telegram bot." />
   <link rel="canonical" href="https://<your-github-pages-domain>/" />
 
-  <!-- Open Graph (EN as default; fine for both) -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="River King — open Telegram bot">
   <meta property="og:description" content="Open the River King bot in one click.">
   <meta property="og:image" content="https://raw.githubusercontent.com/<user>/<repo>/main/og-cover.png">
   <meta property="og:url" content="https://<your-github-pages-domain>/">
 
-  <!-- ===== GA4 (replace G-XXXXXXXXXX) ===== -->
+  <!-- GA4 (замени G-XXXXXXXXXX; можно оставить — страница работает и без него) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -64,12 +64,12 @@
         <div class="logo" aria-hidden="true">🎣</div>
         <div>
           <h1 id="t-heading">River King — open the Telegram bot</h1>
-          <div id="t-sub" class="small">Official launch button. Click is tracked in GA4.</div>
+          <div id="t-sub" class="small">Official launch button.</div>
         </div>
       </div>
 
       <p id="t-paragraph">
-        Press the button below — Telegram will open. The click event is sent to Google Analytics 4 (you can mark it as a conversion).
+        Press the button below — Telegram will open.
       </p>
 
       <a id="cta"
@@ -83,4 +83,25 @@
         <span class="kbd" id="t-link">https://t.me/river_king_bot?start=start</span>
       </div>
 
-      <div id="t-foot" class=
+      <div id="t-foot" class="foot">
+        <!-- оставил пустым — без упоминаний о трекинге -->
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // --- i18n dictionary (без упоминаний о трекинге) ---
+    const I18N = {
+      en: {
+        langAttr: 'en',
+        title: 'River King — open Telegram bot',
+        heading: 'River King — open the Telegram bot',
+        sub: 'Official launch button.',
+        paragraph: 'Press the button below — Telegram will open.',
+        button: 'Open the bot in Telegram',
+        manual: 'If auto-open didn’t work, open the link manually:',
+        foot: ''
+      },
+      ru: {
+        langAttr: 'ru',
+        title: 'River King — открыть Telegram-бота',
